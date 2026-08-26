@@ -25,27 +25,34 @@ The first implementation slice focuses on local inspection:
 
 Eval execution, Codex integration, comparison, persistence, and the web UI remain planned v0.1 work and are **not implemented yet**.
 
-## Development install
+## Local development environment
 
-SkillBench currently targets Python 3.12.
+The primary development setup mirrors the existing Hongkong project workflow:
 
-```bash
-python -m venv .venv
-source .venv/bin/activate  # Windows: .venv\Scripts\activate
-python -m pip install -e ".[dev]"
+- Windows 11 host
+- dedicated Conda environment: `skillbench`
+- Python 3.11
+- Codex runs on the host machine
+- Docker is not required for SkillBench v0.1
+
+Create and prepare the environment:
+
+```powershell
+conda create -n skillbench python=3.11 -y
+conda run -n skillbench python -m pip install -e ".[dev]"
 ```
 
 Inspect the included valid example Skill:
 
-```bash
-skillbench inspect examples/good-skill
+```powershell
+conda run -n skillbench skillbench inspect examples/good-skill
 ```
 
 Run quality checks:
 
-```bash
-ruff check .
-pytest -q
+```powershell
+conda run -n skillbench ruff check .
+conda run -n skillbench pytest -q
 ```
 
 ## Planned v0.1
