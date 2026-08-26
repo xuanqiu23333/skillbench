@@ -8,7 +8,8 @@ SkillBench should stay small, local-first, observable, and easy to extend. The a
 
 Backend and CLI:
 
-- Python 3.12
+- Python 3.11
+- Conda local development environment (`skillbench`)
 - FastAPI
 - Pydantic 2
 - Typer
@@ -27,6 +28,13 @@ Transport:
 
 - REST for CRUD/query operations
 - SSE for long-running run progress where needed
+
+Local development rules:
+
+- Development runs on the Windows host, matching the existing Hongkong project workflow.
+- Use a dedicated Conda environment rather than `.venv` or Poetry.
+- Codex runs on the host machine rather than inside a Docker container.
+- Docker is not required for SkillBench v0.1.
 
 ## 3. High-level architecture
 
@@ -295,7 +303,7 @@ Real Codex execution should be an opt-in integration test, not required for norm
 
 Initial CI should validate:
 
-- supported Python setup;
+- Python 3.11 setup;
 - dependency installation;
 - ruff checks;
 - pytest suite.

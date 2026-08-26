@@ -2,15 +2,58 @@
 
 > A local-first workbench for testing and debugging Agent Skills.
 
-**Status:** Pre-alpha · design and bootstrap phase
+**Status:** Pre-alpha · CLI alpha under active development
 
 SkillBench is an open-source developer tool for building, inspecting, testing, and comparing Agent Skills locally. It is designed to make the Skill development loop visible and reproducible instead of forcing developers to jump between Markdown files, terminal logs, eval JSON, and ad-hoc scripts.
 
 ## Why SkillBench?
 
-Agent Skills are becoming a reusable way to package instructions, scripts, references, and assets for coding agents and other AI agents. The surrounding development workflow is still fragmented: authors need to inspect structure, understand context cost, manage eval cases, run skills against agents, compare with/without-skill behavior, and catch regressions.
+Agent Skills package instructions, scripts, references, and assets for coding agents and other AI agents. The surrounding development workflow is still fragmented: authors need to inspect structure, understand context cost, manage eval cases, run skills against agents, compare with/without-skill behavior, and catch regressions.
 
 SkillBench aims to provide one local-first workbench for that loop.
+
+## Current CLI alpha scope
+
+The first implementation slice focuses on local inspection:
+
+- Parse `SKILL.md` YAML frontmatter and Markdown body
+- Inspect `references/`, `scripts/`, and `assets/`
+- Detect referenced, missing, and orphan reference files
+- Estimate local text context size with a lightweight heuristic
+- Expose the result through `skillbench inspect PATH`
+- Verify behavior with pytest, ruff, and GitHub Actions
+
+Eval execution, Codex integration, comparison, persistence, and the web UI remain planned v0.1 work and are **not implemented yet**.
+
+## Local development environment
+
+The primary development setup mirrors the existing Hongkong project workflow:
+
+- Windows 11 host
+- dedicated Conda environment: `skillbench`
+- Python 3.11
+- Codex runs on the host machine
+- Docker is not required for SkillBench v0.1
+
+Create and prepare the environment:
+
+```powershell
+conda create -n skillbench python=3.11 -y
+conda run -n skillbench python -m pip install -e ".[dev]"
+```
+
+Inspect the included valid example Skill:
+
+```powershell
+conda run -n skillbench skillbench inspect examples/good-skill
+```
+
+Run quality checks:
+
+```powershell
+conda run -n skillbench ruff check .
+conda run -n skillbench pytest -q
+```
 
 ## Planned v0.1
 
@@ -22,6 +65,7 @@ SkillBench aims to provide one local-first workbench for that loop.
 - Compare with-skill vs. without-skill runs
 - Store local run history and metrics
 - Provide a headless CLI mode for CI
+- Provide a local web UI for Overview, Context, Evals, Runs, and Compare
 
 ## Product principles
 
@@ -54,9 +98,7 @@ Skill directory
   without skill ↔ with skill
 ```
 
-## Intended CLI
-
-The v0.1 interface is being designed around commands such as:
+## Target CLI contract
 
 ```bash
 skillbench inspect .
@@ -65,17 +107,18 @@ skillbench test . --headless
 skillbench open .
 ```
 
-These commands are part of the product contract under design and are not yet released.
+Only `inspect` belongs to the current CLI alpha implementation slice.
 
 ## Documentation
 
 - [`docs/PRD.md`](docs/PRD.md) — product requirements for v0.1
 - [`docs/architecture.md`](docs/architecture.md) — proposed technical architecture
 - [`docs/roadmap.md`](docs/roadmap.md) — staged delivery roadmap
+- [`docs/superpowers/plans/2026-08-26-v0.1-cli-alpha.md`](docs/superpowers/plans/2026-08-26-v0.1-cli-alpha.md) — first implementation plan
 
 ## Contributing
 
-The repository is in its design/bootstrap phase. Issues and implementation tasks will be opened after the v0.1 product contract is locked.
+The repository is in early development. Small, testable changes that preserve the local-first and open-standard-friendly direction are preferred.
 
 ## License
 
