@@ -6,10 +6,15 @@ from skillbench.project.parser import SkillParseError, parse_skill_document
 
 
 def test_parse_valid_skill_document(tmp_path: Path) -> None:
-    (tmp_path / "SKILL.md").write_text(
-        "---\nname: systematic-debugging\ndescription: Debug failures methodically.\n---\n\n# Workflow\n\nFind the root cause.\n",
-        encoding="utf-8",
+    skill_text = (
+        "---\n"
+        "name: systematic-debugging\n"
+        "description: Debug failures methodically.\n"
+        "---\n\n"
+        "# Workflow\n\n"
+        "Find the root cause.\n"
     )
+    (tmp_path / "SKILL.md").write_text(skill_text, encoding="utf-8")
 
     document = parse_skill_document(tmp_path)
 
